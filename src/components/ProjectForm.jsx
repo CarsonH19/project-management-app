@@ -1,6 +1,6 @@
 import { useState, forwardRef } from "react";
 
-const ProjectForm = forwardRef(function ProjectForm({ onSaveProject }, ref) {
+const ProjectForm = forwardRef(function ProjectForm({ onCancel, onSave }, ref) {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -17,7 +17,7 @@ const ProjectForm = forwardRef(function ProjectForm({ onSaveProject }, ref) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSaveProject(formData);
+    onSave(formData);
     // Clear form after submission
     setFormData({
       title: "",
@@ -30,20 +30,34 @@ const ProjectForm = forwardRef(function ProjectForm({ onSaveProject }, ref) {
     <>
       <form ref={ref} onSubmit={handleSubmit}>
         <div>
-          <button value={formData.title} onClick={() => ref.current.reset()}>Cancel</button>
+          <button onClick={onCancel}>Cancel</button>
           <button type="submit">Save</button>
         </div>
         <div>
           <label htmlFor="title">Title</label>
-          <input value={formData.title} type="text" name="title" onChange={handleChange} required />
+          <input
+            value={formData.title}
+            type="text"
+            name="title"
+            onChange={handleChange}
+          />
         </div>
         <div>
           <label htmlFor="description">Description</label>
-          <textarea value={formData.description} name="description" onChange={handleChange} required></textarea>
+          <textarea
+            value={formData.description}
+            name="description"
+            onChange={handleChange}
+          ></textarea>
         </div>
         <div>
           <label htmlFor="dueDate">Due Date</label>
-          <input value={formData.dueData} type="date" name="dueDate" onChange={handleChange} required />
+          <input
+            value={formData.dueData}
+            type="date"
+            name="dueDate"
+            onChange={handleChange}
+          />
         </div>
       </form>
     </>
