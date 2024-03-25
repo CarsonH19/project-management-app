@@ -9,9 +9,33 @@ function App() {
 
   const [projectsState, setProjectsState] = useState({
     selectedProjectId: undefined,
-    projects: []
+    projects: [],
   });
 
+  function handleStartAddProject() {
+    setProjectsState((prevState) => {
+      return {
+        ...prevState,
+        selectedProjectId: null,
+      };
+    });
+  }
+
+  function handleAddProject(projectData) {
+    setProjectsState((prevState) => {
+      const projectId = Math.random();
+      const newProject = {
+        ...projectData,
+        id: projectId,
+      };
+
+      return {
+        ...prevState,
+        selectedProjectId: undefined,
+        projects: [...prevState.projects, newProject],
+      };
+    });
+  }
   // const [projectForm, setProjectForm] = useState(false);
   // const [projects, setProjects] = useState([
   //   {
@@ -23,32 +47,32 @@ function App() {
   // ]);
   // const [projectSelected, setProjectSelected] = useState(null);
 
-  const handleProjectForm = () => {
-    setProjectForm(true);
-  };
+  // const handleProjectForm = () => {
+  //   setProjectForm(true);
+  // };
 
-  const handleSaveProject = (formData) => {
-    setProjects((prevProjects) => {
-      return [
-        ...prevProjects,
-        {
-          title: formData.title || "Nothing Important",
-          description: formData.description || "blah blah blah........",
-          dueDate: formData.dueDate || "2024-03-25",
-          tasks: [],
-        },
-      ];
-    });
-    setProjectForm(false);
-  };
+  // const handleSaveProject = (formData) => {
+  //   setProjects((prevProjects) => {
+  //     return [
+  //       ...prevProjects,
+  //       {
+  //         title: formData.title || "Nothing Important",
+  //         description: formData.description || "blah blah blah........",
+  //         dueDate: formData.dueDate || "2024-03-25",
+  //         tasks: [],
+  //       },
+  //     ];
+  //   });
+  //   setProjectForm(false);
+  // };
 
-  const handleCancel = () => {
-    setProjectForm(false);
-  };
+  // const handleCancel = () => {
+  //   setProjectForm(false);
+  // };
 
-  const handleProjectSelect = (index) => {
-    setProjectSelected(index);
-  };
+  // const handleProjectSelect = (index) => {
+  //   setProjectSelected(index);
+  // };
 
   // const handleDeleteProject = (projectIndex) => {
   //   setProjects((prevProjects) => {
@@ -75,38 +99,41 @@ function App() {
   //   });
   // };
 
-  console.log(projects);
-  console.log(projectSelected);
-  console.log(projectForm);
+  let content;
+
+  if (projectsState.selectedProjectId === null) {
+    content = <ProjectForm onAdd={handleAddProject} />;
+  } else if (projectsState.selectedProjectId === undefined) {
+    content = <NoProjectSelected onStartAddProject={handleStartAddProject} />;
+  }
 
   return (
     <main className="h-screen my-8 flex gap-8">
       <Sidebar
-        onAddProject={handleProjectForm}
-        projects={projects}
-        onOpenProject={handleProjectSelect}
+        onStartAddProject={handleStartAddProject}
+        projects={projectsState.projects}
+        // onOpenProject={handleProjectSelect}
       />
 
-      {projectForm && (
+      {/* {projectForm && (
         <ProjectForm
           onClear={handleCancel}
           onSave={handleSaveProject}
-          ref={form}s
+          ref={form}
+          s
         />
-      )}
+      )} */}
 
-      {!projectForm && projectSelected && (
+      {/* {!projectForm && projectSelected && (
         <Project
           onClearTask={handleClearTask}
           onDeleteProject={handleDeleteProject}
           projects={projects}
           projectSelected={projectSelected}
         />
-      )}
+      )} */}
 
-      {!projectForm && !projectSelected && (
-        <NoProjectSelected />
-      )}
+      {content}
     </main>
   );
 }
