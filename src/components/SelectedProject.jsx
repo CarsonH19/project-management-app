@@ -3,6 +3,7 @@ import Tasks from "./Tasks";
 export default function SelectedProject({
   project,
   tasks,
+  onAddTask,
   onDelete,
   onDeleteTask,
 }) {
