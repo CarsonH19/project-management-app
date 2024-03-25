@@ -2,24 +2,27 @@ import { useState, useRef } from "react";
 import ProjectForm from "./components/ProjectForm";
 import Sidebar from "./components/Sidebar";
 import Project from "./components/Project";
+import NoProjectSelected from "./components/NoProjectSelected";
 
 function App() {
-  // useRefs
   const form = useRef();
 
-  // useStates
-  const [projectForm, setProjectForm] = useState(false);
-  const [projects, setProjects] = useState([
-    {
-      title: "Finish This Project",
-      description: "Complete the project management app for my React course.",
-      dueDate: "Mar 26, 2024",
-      tasks: [],
-    },
-  ]);
-  const [projectSelected, setProjectSelected] = useState(null);
+  const [projectsState, setProjectsState] = useState({
+    selectedProjectId: undefined,
+    projects: []
+  });
 
-  // Handlers
+  // const [projectForm, setProjectForm] = useState(false);
+  // const [projects, setProjects] = useState([
+  //   {
+  //     title: "Finish This Project",
+  //     description: "Complete the project management app for my React course.",
+  //     dueDate: "Mar 26, 2024",
+  //     tasks: [],
+  //   },
+  // ]);
+  // const [projectSelected, setProjectSelected] = useState(null);
+
   const handleProjectForm = () => {
     setProjectForm(true);
   };
@@ -47,19 +50,37 @@ function App() {
     setProjectSelected(index);
   };
 
-  const handleDelete = (projectIndex) => {
-    setProjects((prevProjects,) => {
-      // Filter out the project to be deleted
-      return prevProjects.filter((_, index) => index !== projectIndex);
-    });
-  };
+  // const handleDeleteProject = (projectIndex) => {
+  //   setProjects((prevProjects) => {
+  //     // Filter out the project to be deleted
+  //     return prevProjects.filter((_, index) => index !== projectIndex);
+  //   });
+  // };
+
+  // const handleClearTask = (projectIndex, taskIndexToDelete) => {
+  //   setProjects((prevProjects) => {
+  //     // Assuming projectIndex is the index of the project where you want to delete the task
+  //     const updatedProjects = prevProjects.map((project, index) => {
+  //       if (index === projectIndex) {
+  //         // Delete the task at taskIndexToDelete from the tasks array
+  //         const updatedTasks = project.tasks.filter(
+  //           (task, taskIndex) => taskIndex !== taskIndexToDelete
+  //         );
+  //         // Return a new object with the updated tasks array
+  //         return { ...project, tasks: updatedTasks };
+  //       }
+  //       return project; // Return unchanged project if it's not the one we're updating
+  //     });
+  //     return updatedProjects;
+  //   });
+  // };
 
   console.log(projects);
   console.log(projectSelected);
   console.log(projectForm);
 
   return (
-    <>
+    <main className="h-screen my-8 flex gap-8">
       <Sidebar
         onAddProject={handleProjectForm}
         projects={projects}
@@ -70,23 +91,23 @@ function App() {
         <ProjectForm
           onClear={handleCancel}
           onSave={handleSaveProject}
-          ref={form}
+          ref={form}s
         />
       )}
 
       {!projectForm && projectSelected && (
-        <Project onDeleteProject={handleDeleteProject} projects={projects} projectSelected={projectSelected} />
+        <Project
+          onClearTask={handleClearTask}
+          onDeleteProject={handleDeleteProject}
+          projects={projects}
+          projectSelected={projectSelected}
+        />
       )}
 
       {!projectForm && !projectSelected && (
-        <div>
-          <img src="src/assets/no-projects.png" alt="Clipboard and Pen Image" />
-          <h2>No Project Selected</h2>
-          <p>Select a project or get started with a new one</p>
-          <button>Create New Project</button>
-        </div>
+        <NoProjectSelected />
       )}
-    </>
+    </main>
   );
 }
 
