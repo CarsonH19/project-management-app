@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import ProjectForm from "./components/ProjectForm";
 import Sidebar from "./components/Sidebar";
-import Project from "./components/Project";
+import SelectedProject from "./components/SelectedProject";
 import NoProjectSelected from "./components/NoProjectSelected";
 
 function App() {
