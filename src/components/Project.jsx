@@ -1,12 +1,18 @@
-export default function Project({ projectSelected, projects, onDeleteProject }) {
+import { useState } from "react";
+
+export default function Project({
+  projectSelected,
+  projects,
+  onDeleteProject,
+  onClearTask
+}) {
+  const [inputData, setInputData] = useState('');
+
   const project = projects[projectSelected];
   const tasks = project.tasks;
-  console.log(`Project: ${project}`);
-
-  const [inputData, setInputData] = useState(null);
 
   const handleChange = (e) => {
-    setFormData(e.target.value);
+    setInputData(e.target.value);
   };
 
   const handleSubmit = (e) => {
@@ -14,8 +20,6 @@ export default function Project({ projectSelected, projects, onDeleteProject }) 
     // Clear form after submission
     setInputData("");
   };
-
-  
 
   return (
     <div className="project-container">
@@ -37,10 +41,10 @@ export default function Project({ projectSelected, projects, onDeleteProject }) 
       </div>
       <ol>
         {tasks.map((task, index) => {
-          <div className='task'>
+          <div className="task">
             <li key={index}> {task}</li>
-            <button>Clear</button>
-          </div>
+            <button onClick={onClearTask}>Clear</button>
+          </div>;
         })}
       </ol>
     </div>
